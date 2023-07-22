@@ -1,4 +1,4 @@
-ESX = exports['es_extended']:getSharedObject()
+QBCore = exports['qb-core']:GetCoreObject()
 
 _ShowNotification = function(msg)
     lib.notify({
@@ -11,9 +11,9 @@ _ShowHelpNotification = function(msg)
 end
 
 _GetClosestVehicle = function(location)
-    return ESX.Game.GetClosestVehicle(location)
+    return QBCore.Functions.GetClosestVehicle(location)
 end
 
 _GetPlayerJobName = function()
-    return ESX.GetPlayerData().job.name
+    return QBCore.Functions.GetPlayerData().job.name
 end
