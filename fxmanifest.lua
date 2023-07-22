@@ -10,5 +10,12 @@ shared_scripts {
     'config.lua',
 }
 
-client_script 'client.lua'
+client_scripts {
+    'functions.lua',
+    'client.lua',
+}
 server_script 'server.lua'
+
+dependencies {
+    'ox_lib',
+}

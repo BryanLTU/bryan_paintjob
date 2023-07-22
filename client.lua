@@ -1,4 +1,3 @@
-ESX = exports['es_extended']:getSharedObject()
 local sprayGuns = {}
 local isSpraying, isBusy = false, {}
 local currLocation
@@ -59,13 +58,13 @@ if not Config.UseTarget then
 
                 if #(GetEntityCoords(PlayerPedId()) - Config.Locations[currLocation].control) <= 1.5 then
                     if not isBusy[currLocation] then
-                        ESX.ShowHelpNotification('Press ~INPUT_CONTEXT~ to open Paint Options')
+                        _ShowHelpNotification('Press ~INPUT_CONTEXT~ to open Paint Options')
 
                         if IsControlJustPressed(1, 51) then
                             InitializePaint(currLocation)
                         end
                     else
-                        ESX.ShowHelpNotification('Paint Room is~r~ Busy')
+                        _ShowHelpNotification('Paint Room is~r~ Busy')
                     end
                 end
             end
@@ -80,7 +79,7 @@ DoesHaveRequiredJob = function(pos)
     if not Config.Locations[pos].jobs then return true end
 
     for k, v in ipairs(Config.Locations[pos].jobs) do
-        if v == ESX.GetPlayerData().job.name then
+        if v == _GetPlayerJobName() then
             return true
         end
     end
@@ -91,7 +90,7 @@ end
 InitializePaint = function(pos)
     local vehicle = GetVehicleInSprayCoords(Config.Locations[pos].vehicle)
 
-    if not vehicle then return ESX.ShowNotification('No vehicle in position') end
+    if not vehicle then return _ShowHelpNotification('No vehicle in position') end
 
     TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, true)
 
@@ -137,7 +136,7 @@ InitializePaint = function(pos)
 end
 
 GetVehicleInSprayCoords = function(location)
-    local closestVehicle, closestDistance = ESX.Game.GetClosestVehicle(location)
+    local closestVehicle, closestDistance = _GetClosestVehicle(location)
 
     if closestVehicle ~= -1 and closestDistance <= 2.0 then return closestVehicle end
     
