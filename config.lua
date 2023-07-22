@@ -14,7 +14,7 @@ Config.Locations = {
             { pos = vector3(-197.52, -1326.85, 31.13), rotation = vector3(0, 25, 90), scale = 1.2 },
             { pos = vector3(-201.13, -1326.85, 31.13), rotation = vector3(0, 25, 90), scale = 1.2 },
         },
-        jobs = false, -- {'mechanic'}
+        jobs = {'mechanic'}, -- false
     },
 }
 

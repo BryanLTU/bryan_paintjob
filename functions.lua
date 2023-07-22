@@ -1,7 +1,13 @@
 ESX = exports['es_extended']:getSharedObject()
 
+_ShowNotification = function(msg)
+    lib.notify({
+        title = msg,
+    })
+end
+
 _ShowHelpNotification = function(msg)
-    ESX.ShowHelpNotification(msg)
+    lib.showTextUI(msg)
 end
 
 _GetClosestVehicle = function(location)

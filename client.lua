@@ -48,6 +48,8 @@ end)
 
 if not Config.UseTarget then
     Citizen.CreateThread(function()
+        local isDrawn = false
+
         while true do
             local sleep = true
 
@@ -58,14 +60,24 @@ if not Config.UseTarget then
 
                 if #(GetEntityCoords(PlayerPedId()) - Config.Locations[currLocation].control) <= 1.5 then
                     if not isBusy[currLocation] then
-                        _ShowHelpNotification('Press ~INPUT_CONTEXT~ to open Paint Options')
+                        if not isDrawn then
+                            _ShowHelpNotification('Press [E] to open Paint Options')
+                            isDrawn = true
+                        end
 
                         if IsControlJustPressed(1, 51) then
+                            lib.hideTextUI()
+                            isDrawn = false
+                            
                             InitializePaint(currLocation)
                         end
-                    else
-                        _ShowHelpNotification('Paint Room is~r~ Busy')
+                    elseif not isDrawn then
+                        _ShowHelpNotification('Paint Room is Busy')
+                        isDrawn = true
                     end
+                elseif isDrawn then
+                    lib.hideTextUI()
+                    isDrawn = false
                 end
             end
 
@@ -90,7 +102,7 @@ end
 InitializePaint = function(pos)
     local vehicle = GetVehicleInSprayCoords(Config.Locations[pos].vehicle)
 
-    if not vehicle then return _ShowHelpNotification('No vehicle in position') end
+    if not vehicle then return _ShowNotification('No vehicle in position') end
 
     TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, true)
 
