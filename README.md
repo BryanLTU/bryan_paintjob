@@ -14,5 +14,6 @@ Easily configurable Paint job locations with realistic Paint changing effect. Yo
 | Name | Link |
 | --- | --- |
 | ox_lib | https://github.com/overextended/ox_lib |
+| (optional) ox_target | https://github.com/overextended/ox_target |
 | (optional) es_extended | |
 | (optional) qbcore | |
