@@ -8,7 +8,7 @@
 ## Description
 Easily configurable Paint job locations with realistic Paint changing effect. You can set Paint Guns in the `config.lua` file from which the Particle Effects will spread. The Vehicle color changes gradually.
 
->**Heavily inspired by: [Cyber Garage Script](https://forum.cfx.re/t/paid-qb-esx-cyber-garage-script/4925161)** - MrJekylle_
+>**Heavily inspired by: [Cyber Garage Script](https://forum.cfx.re/t/paid-qb-esx-cyber-garage-script/4925161)** - MrJekylle
 
 ## Dependencies
 | Name | Link |
