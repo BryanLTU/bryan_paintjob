@@ -6,6 +6,20 @@ RegisterNetEvent('bryan_paintjob:client:setLocationBusy', function(pos, value)
     isBusy[pos] = value
 end)
 
+RegisterNetEvent('bryan_paintjob:client:initalizePaint', function(id, vehicle, color, isPrimary)
+    if #(GetEntityCoords(PlayerPedId()) - Config.Locations[id].control) <= 15.0 then
+        PaintVehicle(NetToVeh(vehicle), color, isPrimary)
+        InitializeParticles(id, color, NetToVeh(vehicle))
+        isSpraying = true
+    end
+end)
+
+RegisterNetEvent('bryan_paintjob:client:stopPaint', function(id)
+    if #(GetEntityCoords(PlayerPedId()) - Config.Locations[id].control) <= 15.0 then
+        isSpraying = false
+    end
+end)
+
 Citizen.CreateThread(function()
     for k, v in ipairs(Config.Locations) do SpawnSprayGuns(k) end
 
@@ -100,6 +114,7 @@ DoesHaveRequiredJob = function(pos)
 end
 
 InitializePaint = function(pos)
+    currLocation = pos
     local vehicle = GetVehicleInSprayCoords(Config.Locations[pos].vehicle)
 
     if not vehicle then return _ShowNotification('No vehicle in position') end
@@ -136,14 +151,14 @@ InitializePaint = function(pos)
         SetVehicleModColor_2(vehicle, tonumber(input[2]), 0)
     end
 
-    PaintVehicle(vehicle, Hex2Rgb(input[3]), isPrimary)
-    InitializeParticles(pos, Hex2Rgb(input[3]), vehicle)
+    TriggerServerEvent('bryan_paintjob:server:initalizePaint', pos, VehToNet(vehicle), Hex2Rgb(input[3]), isPrimary)
 
     Citizen.CreateThread(function()
         Citizen.Wait(1000)
         while isSpraying do Citizen.Wait(100) end
 
         TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, false)
+        TriggerServerEvent('bryan_paintjob:server:stopPaint', pos)
     end)
 end
 
@@ -210,7 +225,7 @@ SprayParticles = function(dict, name, scale, color, entity, rotation)
 
     UseParticleFxAsset(dict)
 
-    local particleHandle = StartNetworkedParticleFxLoopedOnEntity(name, entity, 0.2, 0.0, 0.1, 0.0, 80.0, 0.0, scale, 0, 0, 0)
+    local particleHandle = StartParticleFxLoopedOnEntity(name, entity, 0.2, 0.0, 0.1, 0.0, 80.0, 0.0, scale, 0, 0, 0)
 
     SetParticleFxLoopedAlpha(particleHandle, 100.0)
     SetParticleFxLoopedColour(particleHandle, color.r / 255.0, color.g / 255.0, color.b / 255.0)
@@ -224,8 +239,6 @@ Hex2Rgb = function(hex)
 end
 
 SpawnSprayGuns = function(id, vehicleLocation)
-    -- DeleteSprayGuns()
-
     local hash = GetHashKey(Config.SprayModel)
     while not HasModelLoaded(hash) do
         RequestModel(hash)
@@ -237,7 +250,6 @@ SpawnSprayGuns = function(id, vehicleLocation)
 
         SetEntityRotation(object, v.rotation.x, v.rotation.y, v.rotation.z, 0, 1)
         FreezeEntityPosition(object, true)
-
         table.insert(sprayGuns, {
             object = object,
             id = id,
