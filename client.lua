@@ -171,7 +171,10 @@ GetVehicleInSprayCoords = function(location)
 end
 
 PaintVehicle = function(vehicle, color, primary)
-    local r, g, b = primary and GetVehicleCustomPrimaryColour(vehicle) or GetVehicleCustomSecondaryColour(vehicle)
+    local r, g, b
+
+    if primary then r, g, b = GetVehicleCustomPrimaryColour(vehicle)
+    else r, g, b = GetVehicleCustomSecondaryColour(vehicle) end
 
     Citizen.CreateThread(function()
         isSpraying = true
