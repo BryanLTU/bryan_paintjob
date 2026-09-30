@@ -1,5 +1,8 @@
 Config = {}
 
+-- 'auto', 'esx', 'qb', 'qbx' or 'standalone'
+Config.Framework = 'auto'
+
 Config.UseTarget = true
 
 Config.Locations = {
@@ -19,3 +22,109 @@ Config.Locations = {
 }
 
 Config.SprayModel = 'prop_tool_nailgun'
+
+Config.SprayDuration = 10 -- seconds it takes to fully change the colour
+
+-- index: https://docs.fivem.net/docs/game-references/vehicle-references/vehicle-colours/
+Config.WheelColours = {
+    { label = 'Black', index = 0, hex = '#0d1116' },
+    { label = 'Matte Black', index = 12, hex = '#13181f' },
+    { label = 'Silver', index = 4, hex = '#99a0a6' },
+    { label = 'Chrome', index = 120, hex = '#d2d2d2' },
+    { label = 'White', index = 111, hex = '#f0f0f0' },
+    { label = 'Red', index = 27, hex = '#c00e1a' },
+    { label = 'Orange', index = 38, hex = '#f78616' },
+    { label = 'Classic Gold', index = 37, hex = '#c2944f' },
+    { label = 'Bronze', index = 90, hex = '#915e3e' },
+    { label = 'Yellow', index = 88, hex = '#ffcf20' },
+    { label = 'Green', index = 53, hex = '#155c2d' },
+    { label = 'Blue', index = 64, hex = '#47578f' },
+    { label = 'Hot Pink', index = 135, hex = '#f21f99' },
+}
+
+-- 161-222 are GTA's chameleon paints, 223-242 require the addon pack. Set to false to disable
+-- hex: colour of the spray particles
+Config.ChameleonColours = {
+    { label = 'Anodized Red Pearl', index = 161, hex = '#c00e1a' },
+    { label = 'Anodized Wine Pearl', index = 162, hex = '#722f37' },
+    { label = 'Anodized Purple Pearl', index = 163, hex = '#8a2be2' },
+    { label = 'Anodized Blue Pearl', index = 164, hex = '#1e56d6' },
+    { label = 'Anodized Green Pearl', index = 165, hex = '#2e8b57' },
+    { label = 'Anodized Lime Pearl', index = 166, hex = '#9acd32' },
+    { label = 'Anodized Copper Pearl', index = 167, hex = '#b87333' },
+    { label = 'Anodized Bronze Pearl', index = 168, hex = '#915e3e' },
+    { label = 'Anodized Champagne Pearl', index = 169, hex = '#e8d3a8' },
+    { label = 'Anodized Gold Pearl', index = 170, hex = '#d4af37' },
+    { label = 'Green/Blue Flip', index = 171, hex = '#2e8b57' },
+    { label = 'Green/Red Flip', index = 172, hex = '#2e8b57' },
+    { label = 'Green/Brown Flip', index = 173, hex = '#2e8b57' },
+    { label = 'Green/Turquoise Flip', index = 174, hex = '#30d5c8' },
+    { label = 'Green/Purple Flip', index = 175, hex = '#8a2be2' },
+    { label = 'Teal/Purple Flip', index = 176, hex = '#008080' },
+    { label = 'Turquoise/Red Flip', index = 177, hex = '#30d5c8' },
+    { label = 'Turquoise/Purple Flip', index = 178, hex = '#30d5c8' },
+    { label = 'Cyan/Purple Flip', index = 179, hex = '#00bcd4' },
+    { label = 'Blue/Pink Flip', index = 180, hex = '#1e56d6' },
+    { label = 'Blue/Green Flip', index = 181, hex = '#2e8b57' },
+    { label = 'Purple/Red Flip', index = 182, hex = '#8a2be2' },
+    { label = 'Purple/Green Flip', index = 183, hex = '#8a2be2' },
+    { label = 'Magenta/Green Flip', index = 184, hex = '#ff00ff' },
+    { label = 'Magenta/Yellow Flip', index = 185, hex = '#ff00ff' },
+    { label = 'Burgundy/Green Flip', index = 186, hex = '#800020' },
+    { label = 'Magenta/Cyan Flip', index = 187, hex = '#ff00ff' },
+    { label = 'Copper/Purple Flip', index = 188, hex = '#b87333' },
+    { label = 'Magenta/Orange Flip', index = 189, hex = '#ff00ff' },
+    { label = 'Red/Orange Flip', index = 190, hex = '#f78616' },
+    { label = 'Orange/Purple Flip', index = 191, hex = '#f78616' },
+    { label = 'Orange/Blue Flip', index = 192, hex = '#f78616' },
+    { label = 'White/Purple Flip', index = 193, hex = '#8a2be2' },
+    { label = 'Red/Rainbow Flip', index = 194, hex = '#ffd700' },
+    { label = 'Blue/Rainbow Flip', index = 195, hex = '#ffd700' },
+    { label = 'Dark Green Pearl', index = 196, hex = '#0b5d3b' },
+    { label = 'Dark Teal Pearl', index = 197, hex = '#0e5a5a' },
+    { label = 'Dark Blue Pearl', index = 198, hex = '#1b2a6b' },
+    { label = 'Dark Purple Pearl', index = 199, hex = '#3b1d5e' },
+    { label = 'Oil Slick Pearl', index = 200, hex = '#4b3a6b' },
+    { label = 'Light Green Pearl', index = 201, hex = '#90ee90' },
+    { label = 'Light Blue Pearl', index = 202, hex = '#add8e6' },
+    { label = 'Light Purple Pearl', index = 203, hex = '#c8a2e8' },
+    { label = 'Light Pink Pearl', index = 204, hex = '#ffb6c1' },
+    { label = 'Off White Pearl', index = 205, hex = '#f5f0e6' },
+    { label = 'Cute Pink Pearl', index = 206, hex = '#ff9ecb' },
+    { label = 'Baby Yellow Pearl', index = 207, hex = '#fff5a5' },
+    { label = 'Baby Green Pearl', index = 208, hex = '#b5e8b0' },
+    { label = 'Baby Blue Pearl', index = 209, hex = '#a7c7e7' },
+    { label = 'Cream Pearl', index = 210, hex = '#fffdd0' },
+    { label = 'White Prismatic Pearl', index = 211, hex = '#f0f0f0' },
+    { label = 'Graphite Prismatic Pearl', index = 212, hex = '#3a3a3a' },
+    { label = 'Blue Prismatic Pearl', index = 213, hex = '#1e56d6' },
+    { label = 'Purple Prismatic Pearl', index = 214, hex = '#8a2be2' },
+    { label = 'Hot Pink Prismatic Pearl', index = 215, hex = '#f21f99' },
+    { label = 'Red Prismatic Pearl', index = 216, hex = '#c00e1a' },
+    { label = 'Green Prismatic Pearl', index = 217, hex = '#2e8b57' },
+    { label = 'Black Prismatic Pearl', index = 218, hex = '#101010' },
+    { label = 'Oil Spill Prismatic Pearl', index = 219, hex = '#4b3a6b' },
+    { label = 'Rainbow Prismatic Pearl', index = 220, hex = '#ffd700' },
+    { label = 'Black Holographic Pearl', index = 221, hex = '#101010' },
+    { label = 'White Holographic Pearl', index = 222, hex = '#f0f0f0' },
+    { label = 'Monochrome', index = 223, hex = '#b0b0b0' },
+    { label = 'Night & Day', index = 224, hex = '#3a5fcd' },
+    { label = 'The Verlierer', index = 225, hex = '#e04f9a' },
+    { label = 'Sprunk Extreme', index = 226, hex = '#3cb043' },
+    { label = 'Vice City', index = 227, hex = '#ff5fa2' },
+    { label = 'Synthwave Night', index = 228, hex = '#8a2be2' },
+    { label = 'Four Seasons', index = 229, hex = '#d9a441' },
+    { label = 'M9 Throwback', index = 230, hex = '#c0392b' },
+    { label = 'Bubblegum', index = 231, hex = '#ff8fcf' },
+    { label = 'Full Rainbow', index = 232, hex = '#ffd700' },
+    { label = 'Sunset', index = 233, hex = '#ff7e40' },
+    { label = 'The Seven', index = 234, hex = '#4a90e2' },
+    { label = 'Kamen Rider', index = 235, hex = '#2e8b57' },
+    { label = 'Chromatic', index = 236, hex = '#00bcd4' },
+    { label = "It's Christmas!", index = 237, hex = '#d62d20' },
+    { label = 'Temperature', index = 238, hex = '#ff4500' },
+    { label = 'HSW Badge', index = 239, hex = '#6a5acd' },
+    { label = 'Anod. Lightning', index = 240, hex = '#1e90ff' },
+    { label = 'Emeralds', index = 241, hex = '#50c878' },
+    { label = 'Fubuki Castle', index = 242, hex = '#a8d8ff' },
+}
