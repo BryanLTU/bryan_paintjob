@@ -6,10 +6,10 @@ RegisterNetEvent('bryan_paintjob:client:setLocationBusy', function(pos, value)
     isBusy[pos] = value
 end)
 
-RegisterNetEvent('bryan_paintjob:client:initalizePaint', function(id, vehicle, color, target, wheelColour)
+RegisterNetEvent('bryan_paintjob:client:initalizePaint', function(id, vehicle, color, target, paletteIndex)
     if #(GetEntityCoords(PlayerPedId()) - Config.Locations[id].control) <= 15.0 then
-        if target == 'wheels' then
-            PaintWheels(NetToVeh(vehicle), wheelColour)
+        if paletteIndex then
+            PaintPalette(NetToVeh(vehicle), target, paletteIndex)
         else
             PaintVehicle(NetToVeh(vehicle), color, target == 'primary')
         end
@@ -127,12 +127,23 @@ InitializePaint = function(pos)
 
     TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, true)
 
+    local palettes = {
+        wheels = Config.WheelColours,
+        chameleon = Config.ChameleonColours,
+    }
+
+    local options = {
+        { value = 'primary', label = 'Primary' },
+        { value = 'secondary', label = 'Secondary' },
+        { value = 'wheels', label = 'Wheels' },
+    }
+
+    if Config.ChameleonColours and #Config.ChameleonColours > 0 then
+        table.insert(options, { value = 'chameleon', label = 'Chameleon' })
+    end
+
     local option = lib.inputDialog('Paint Job', {
-        { type = 'select', label = 'Option', options = {
-            { value = 'primary', label = 'Primary' },
-            { value = 'secondary', label = 'Secondary' },
-            { value = 'wheels', label = 'Wheels' },
-        }, default = 'primary', clearable = false },
+        { type = 'select', label = 'Option', options = options, default = 'primary', clearable = false },
     })
 
     if not option then
@@ -142,15 +153,15 @@ InitializePaint = function(pos)
 
     local target = option[1]
 
-    if target == 'wheels' then
-        local wheelOptions = {}
+    if palettes[target] then
+        local colourOptions = {}
 
-        for k, v in ipairs(Config.WheelColours) do
-            table.insert(wheelOptions, { value = tostring(k), label = v.label })
+        for k, v in ipairs(palettes[target]) do
+            table.insert(colourOptions, { value = tostring(k), label = v.label })
         end
 
-        local input = lib.inputDialog('Wheel Paint', {
-            { type = 'select', label = 'Colour', options = wheelOptions, default = '1', clearable = false },
+        local input = lib.inputDialog('Paint Job', {
+            { type = 'select', label = 'Colour', options = colourOptions, default = '1', clearable = false, searchable = true },
         })
 
         if not input then
@@ -158,9 +169,9 @@ InitializePaint = function(pos)
             return
         end
 
-        local wheel = Config.WheelColours[tonumber(input[1])]
+        local colour = palettes[target][tonumber(input[1])]
 
-        TriggerServerEvent('bryan_paintjob:server:initalizePaint', pos, VehToNet(vehicle), Hex2Rgb(wheel.hex), target, wheel.index)
+        TriggerServerEvent('bryan_paintjob:server:initalizePaint', pos, VehToNet(vehicle), Hex2Rgb(colour.hex), target, colour.index)
     else
         local input = lib.inputDialog('Paint Job', {
             { type = 'select', label = 'Type', options = {
@@ -234,14 +245,25 @@ PaintVehicle = function(vehicle, color, primary)
     end)
 end
 
-PaintWheels = function(vehicle, wheelColour)
+-- Palette colours can't fade like custom RGB, so they are applied once the spray finishes
+PaintPalette = function(vehicle, target, index)
     Citizen.CreateThread(function()
         isSpraying = true
 
         Citizen.Wait(math.max(Config.SprayDuration, 0.1) * 1000)
 
-        local pearlescentColour = GetVehicleExtraColours(vehicle)
-        SetVehicleExtraColours(vehicle, pearlescentColour, wheelColour)
+        if target == 'wheels' then
+            local pearlescentColour = GetVehicleExtraColours(vehicle)
+            SetVehicleExtraColours(vehicle, pearlescentColour, index)
+        elseif target == 'chameleon' then
+            local _, wheelColour = GetVehicleExtraColours(vehicle)
+
+            -- Custom RGB colours would render on top of the chameleon ramp
+            ClearVehicleCustomPrimaryColour(vehicle)
+            ClearVehicleCustomSecondaryColour(vehicle)
+            SetVehicleColours(vehicle, index, index)
+            SetVehicleExtraColours(vehicle, 0, wheelColour)
+        end
 
         isSpraying = false
     end)
