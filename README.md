@@ -16,5 +16,23 @@ Easily configurable Paint job locations with realistic Paint changing effect. Yo
 | --- | --- |
 | ox_lib | https://github.com/overextended/ox_lib |
 | (optional) ox_target | https://github.com/overextended/ox_target |
-| (optional) es_extended | |
-| (optional) qbcore | |
+
+## Frameworks
+Supported out of the box, no separate branches needed:
+
+| Framework | `Config.Framework` |
+| --- | --- |
+| ESX | `esx` |
+| QBCore | `qb` |
+| Qbox | `qbx` |
+| Standalone (job restrictions are ignored) | `standalone` |
+
+By default `Config.Framework = 'auto'` detects whichever framework is running.
+
+## Structure
+```
+bridge/        framework detection and per-framework adapters
+client/        client logic
+server/        server logic
+config.lua     configuration
+```

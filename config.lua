@@ -1,5 +1,8 @@
 Config = {}
 
+-- 'auto', 'esx', 'qb', 'qbx' or 'standalone'
+Config.Framework = 'auto'
+
 Config.UseTarget = true
 
 Config.Locations = {
