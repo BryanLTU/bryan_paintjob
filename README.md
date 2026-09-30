@@ -9,6 +9,8 @@
 ## Description
 Easily configurable Paint job locations with realistic Paint changing effect. You can set Paint Guns in the `config.lua` file from which the Particle Effects will spread. The Vehicle color changes gradually.
 
+Players can also pick the **Spray Gun** method to paint the vehicle by hand: the colour only progresses while they're spraying the car, and with `Config.ManualSpray.zones` every side has to be covered. Configure it under `Config.ManualSpray`.
+
 >**Heavily inspired by: [Cyber Garage Script](https://forum.cfx.re/t/paid-qb-esx-cyber-garage-script/4925161)** - MrJekylle
 
 ## Dependencies

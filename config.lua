@@ -25,6 +25,21 @@ Config.SprayModel = 'prop_tool_nailgun'
 
 Config.SprayDuration = 10 -- seconds it takes to fully change the colour
 
+-- Adds a 'Spray Gun' method where the player sprays the vehicle by hand
+Config.ManualSpray = {
+    enabled = true,
+    model = 'prop_tool_nailgun',
+    bone = 18905,
+    offset = vector3(0.12, 0.03, 0.02),
+    rotation = vector3(-90.0, 0.0, 0.0),
+    anim = { dict = 'amb@world_human_clipboard@male@base', clip = 'base' }, -- holding the gun in the left hand while not aiming
+    particleScale = 0.6,
+    range = 3.0, -- max distance between the player and the sprayed spot
+    maxDistance = 15.0, -- moving further than this from the vehicle position cancels the job
+    zones = true, -- front, back, left, right and roof all need to be sprayed, instead of any single spot
+    cancelKey = 73, -- X
+}
+
 -- index: https://docs.fivem.net/docs/game-references/vehicle-references/vehicle-colours/
 Config.WheelColours = {
     { label = 'Black', index = 0, hex = '#0d1116' },
