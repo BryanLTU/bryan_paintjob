@@ -2,8 +2,8 @@ RegisterNetEvent('bryan_paintjob:server:setLocationBusy', function(pos, value)
     TriggerClientEvent('bryan_paintjob:client:setLocationBusy', -1, pos, value)
 end)
 
-RegisterNetEvent('bryan_paintjob:server:initalizePaint', function(id, vehicle, color, isPrimary)
-    TriggerClientEvent('bryan_paintjob:client:initalizePaint', -1, id, vehicle, color, isPrimary)
+RegisterNetEvent('bryan_paintjob:server:initalizePaint', function(id, vehicle, color, target, wheelColour)
+    TriggerClientEvent('bryan_paintjob:client:initalizePaint', -1, id, vehicle, color, target, wheelColour)
 end)
 
 RegisterNetEvent('bryan_paintjob:server:stopPaint', function(id)

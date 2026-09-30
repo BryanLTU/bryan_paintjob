@@ -24,3 +24,20 @@ Config.Locations = {
 Config.SprayModel = 'prop_tool_nailgun'
 
 Config.SprayDuration = 10 -- seconds it takes to fully change the colour
+
+-- index: https://docs.fivem.net/docs/game-references/vehicle-references/vehicle-colours/
+Config.WheelColours = {
+    { label = 'Black', index = 0, hex = '#0d1116' },
+    { label = 'Matte Black', index = 12, hex = '#13181f' },
+    { label = 'Silver', index = 4, hex = '#99a0a6' },
+    { label = 'Chrome', index = 120, hex = '#d2d2d2' },
+    { label = 'White', index = 111, hex = '#f0f0f0' },
+    { label = 'Red', index = 27, hex = '#c00e1a' },
+    { label = 'Orange', index = 38, hex = '#f78616' },
+    { label = 'Classic Gold', index = 37, hex = '#c2944f' },
+    { label = 'Bronze', index = 90, hex = '#915e3e' },
+    { label = 'Yellow', index = 88, hex = '#ffcf20' },
+    { label = 'Green', index = 53, hex = '#155c2d' },
+    { label = 'Blue', index = 64, hex = '#47578f' },
+    { label = 'Hot Pink', index = 135, hex = '#f21f99' },
+}

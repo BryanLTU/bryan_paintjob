@@ -6,9 +6,13 @@ RegisterNetEvent('bryan_paintjob:client:setLocationBusy', function(pos, value)
     isBusy[pos] = value
 end)
 
-RegisterNetEvent('bryan_paintjob:client:initalizePaint', function(id, vehicle, color, isPrimary)
+RegisterNetEvent('bryan_paintjob:client:initalizePaint', function(id, vehicle, color, target, wheelColour)
     if #(GetEntityCoords(PlayerPedId()) - Config.Locations[id].control) <= 15.0 then
-        PaintVehicle(NetToVeh(vehicle), color, isPrimary)
+        if target == 'wheels' then
+            PaintWheels(NetToVeh(vehicle), wheelColour)
+        else
+            PaintVehicle(NetToVeh(vehicle), color, target == 'primary')
+        end
         InitializeParticles(id, color, NetToVeh(vehicle))
         isSpraying = true
     end
@@ -123,37 +127,69 @@ InitializePaint = function(pos)
 
     TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, true)
 
-    local input = lib.inputDialog('Paint Job', {
+    local option = lib.inputDialog('Paint Job', {
         { type = 'select', label = 'Option', options = {
             { value = 'primary', label = 'Primary' },
-            { value = 'secondary', label = 'Secondary' }
+            { value = 'secondary', label = 'Secondary' },
+            { value = 'wheels', label = 'Wheels' },
         }, default = 'primary', clearable = false },
-        { type = 'select', label = 'Type', options = {
-            { value = '0', label = 'Normal' },
-            { value = '1', label = 'Metalic' },
-            { value = '2', label = 'Pearl' },
-            { value = '3', label = 'Matte' },
-            { value = '4', label = 'Metal' },
-            { value = '5', label = 'Chrome' },
-        }, default = '0', clearable = false },
-        { type = 'color', label = 'Colour', default = '#ffffff' }
     })
 
-    if not input then
+    if not option then
         TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, false)
         return
     end
 
-    local isPrimary = input[1] == 'primary'
+    local target = option[1]
 
-    if isPrimary then
-        SetVehicleModColor_1(vehicle, tonumber(input[2]), 0, 0)
-        SetVehicleExtraColours(vehicle, 0, 0)
+    if target == 'wheels' then
+        local wheelOptions = {}
+
+        for k, v in ipairs(Config.WheelColours) do
+            table.insert(wheelOptions, { value = tostring(k), label = v.label })
+        end
+
+        local input = lib.inputDialog('Wheel Paint', {
+            { type = 'select', label = 'Colour', options = wheelOptions, default = '1', clearable = false },
+        })
+
+        if not input then
+            TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, false)
+            return
+        end
+
+        local wheel = Config.WheelColours[tonumber(input[1])]
+
+        TriggerServerEvent('bryan_paintjob:server:initalizePaint', pos, VehToNet(vehicle), Hex2Rgb(wheel.hex), target, wheel.index)
     else
-        SetVehicleModColor_2(vehicle, tonumber(input[2]), 0)
-    end
+        local input = lib.inputDialog('Paint Job', {
+            { type = 'select', label = 'Type', options = {
+                { value = '0', label = 'Normal' },
+                { value = '1', label = 'Metalic' },
+                { value = '2', label = 'Pearl' },
+                { value = '3', label = 'Matte' },
+                { value = '4', label = 'Metal' },
+                { value = '5', label = 'Chrome' },
+            }, default = '0', clearable = false },
+            { type = 'color', label = 'Colour', default = '#ffffff' }
+        })
 
-    TriggerServerEvent('bryan_paintjob:server:initalizePaint', pos, VehToNet(vehicle), Hex2Rgb(input[3]), isPrimary)
+        if not input then
+            TriggerServerEvent('bryan_paintjob:server:setLocationBusy', pos, false)
+            return
+        end
+
+        if target == 'primary' then
+            local _, wheelColour = GetVehicleExtraColours(vehicle)
+
+            SetVehicleModColor_1(vehicle, tonumber(input[1]), 0, 0)
+            SetVehicleExtraColours(vehicle, 0, wheelColour)
+        else
+            SetVehicleModColor_2(vehicle, tonumber(input[1]), 0)
+        end
+
+        TriggerServerEvent('bryan_paintjob:server:initalizePaint', pos, VehToNet(vehicle), Hex2Rgb(input[2]), target)
+    end
 
     Citizen.CreateThread(function()
         Citizen.Wait(1000)
@@ -193,6 +229,19 @@ PaintVehicle = function(vehicle, color, primary)
             if primary then SetVehicleCustomPrimaryColour(vehicle, r, g, b)
             else SetVehicleCustomSecondaryColour(vehicle, r, g, b) end
         end
+
+        isSpraying = false
+    end)
+end
+
+PaintWheels = function(vehicle, wheelColour)
+    Citizen.CreateThread(function()
+        isSpraying = true
+
+        Citizen.Wait(math.max(Config.SprayDuration, 0.1) * 1000)
+
+        local pearlescentColour = GetVehicleExtraColours(vehicle)
+        SetVehicleExtraColours(vehicle, pearlescentColour, wheelColour)
 
         isSpraying = false
     end)
