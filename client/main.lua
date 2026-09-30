@@ -169,20 +169,26 @@ GetVehicleInSprayCoords = function(location)
 end
 
 PaintVehicle = function(vehicle, color, primary)
-    local r, g, b
+    local startR, startG, startB
 
-    if primary then r, g, b = GetVehicleCustomPrimaryColour(vehicle)
-    else r, g, b = GetVehicleCustomSecondaryColour(vehicle) end
+    if primary then startR, startG, startB = GetVehicleCustomPrimaryColour(vehicle)
+    else startR, startG, startB = GetVehicleCustomSecondaryColour(vehicle) end
 
     Citizen.CreateThread(function()
         isSpraying = true
 
-        while r ~= color.r or g ~= color.g or b ~= color.b do
+        local duration = math.max(Config.SprayDuration, 0.1) * 1000
+        local startTime = GetGameTimer()
+        local progress = 0.0
+
+        while progress < 1.0 do
             Citizen.Wait(100)
 
-            r = color.r ~= r and (color.r > r and r + 1 or r - 1) or r
-            g = color.g ~= g and (color.g > g and g + 1 or g - 1) or g
-            b = color.b ~= b and (color.b > b and b + 1 or b - 1) or b
+            progress = math.min((GetGameTimer() - startTime) / duration, 1.0)
+
+            local r = math.floor(startR + (color.r - startR) * progress + 0.5)
+            local g = math.floor(startG + (color.g - startG) * progress + 0.5)
+            local b = math.floor(startB + (color.b - startB) * progress + 0.5)
 
             if primary then SetVehicleCustomPrimaryColour(vehicle, r, g, b)
             else SetVehicleCustomSecondaryColour(vehicle, r, g, b) end

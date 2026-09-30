@@ -22,3 +22,5 @@ Config.Locations = {
 }
 
 Config.SprayModel = 'prop_tool_nailgun'
+
+Config.SprayDuration = 10 -- seconds it takes to fully change the colour
